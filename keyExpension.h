@@ -7,10 +7,12 @@
 
 void KeyExpension();
 
-void RotWord(char word[4]);
+void RotWord(unsigned char word[4]);
 
-void SubWord(char word[4]);
+void SubWord(unsigned char word[4]);
 
 void Rcon();
+
+void SBox(unsigned char word);
 
 #endif

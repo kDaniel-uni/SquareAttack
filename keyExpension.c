@@ -25,23 +25,29 @@ char comparison_table[256] = {
     0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
 };
 
-void RotWord(char word[4]) {
-	char buffer = word[0];
+void SBox(unsigned char word) {
+    unsigned char high = word >> 4;
+    unsigned char low = word & 0x0F;
+    word = comparison_table[high * 16 + low];
+}
+
+void RotWord(unsigned char word[4]) {
+	unsigned char buffer = word[0];
 	word[0] = word[1];
 	word[1] = word[2];
 	word[2] = word[3];
 	word[3] = buffer;
 }
 
-void SubWord(char word[4]) {
+void SubWord(unsigned char word[4]) {
     for (int i = 0; i < 4; i++) {
-        printf("%02x\n", word[i]);
-        char high = word[i]>>4;
-        char low = word[i]&0x0F;
-        printf("%02x %02x\n", high, low);
-        printf("%u %u\n", high, low);
-        //int high = (int)strtol(high, NULL, 0);
-        //int low = (int)strtol(low, NULL, 0);
+        //printf("%hhX\n", word[i]);
+        unsigned char high = word[i]>>4;
+        unsigned char low = word[i]&0x0F;
+        //printf("%hhX %hhX\n", high, low);
+        //printf("%u %u\n", high, low);
         word[i] = comparison_table[high * 16 + low];
+        //SBox(word[i]);
     }
 }
+
