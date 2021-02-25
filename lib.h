@@ -5,14 +5,14 @@ typedef uint tableau2D[4][4] ;
 The  Round  Key is derived from the Cipher Key by means of the key schedule.
 The Round Key length is equal to the block length Nb.
 */
-void AddRoundKey(tableau2D *state,uint* RoundKey){
+void AddRoundKey(tableau2D *state,tableau2D* RoundKey){
   int Nb = 4; //peut etre egal à 4 6 ou 8
   int i,j;
   for (i = 0; i < 4; ++i)
   {
     for (j = 0; j < 4; ++j)
     {
-      (*state)[i][j] ^= RoundKey[i][j];
+      (*state)[i][j] ^= (*RoundKey)[i][j];
     }
   }
 }
