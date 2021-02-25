@@ -22,29 +22,32 @@ void ShiftRow(tableau2D* state){
   unsigned int  decalage;
 
 // Rotate first row 1 columns to left
-decalage           = (*state)[0][1];
-(*state)[0][1] = (*state)[1][1];
-(*state)[1][1] = (*state)[2][1];
-(*state)[2][1] = (*state)[3][1];
-(*state)[3][1] = decalage;
+  decalage           = (*state)[0][1];
+  (*state)[0][1] = (*state)[1][1];
+  (*state)[1][1] = (*state)[2][1];
+  (*state)[2][1] = (*state)[3][1];
+  (*state)[3][1] = decalage;
 
-// Rotate second row 2 columns to left
-decalage           = (*state)[0][2];
-(*state)[0][2] = (*state)[2][2];
-(*state)[2][2] = decalage;
+  // Rotate second row 2 columns to left
+  decalage           = (*state)[0][2];
+  (*state)[0][2] = (*state)[2][2];
+  (*state)[2][2] = decalage;
 
-decalage           = (*state)[1][2];
-(*state)[1][2] = (*state)[3][2];
-(*state)[3][2] = decalage ;
+  decalage           = (*state)[1][2];
+  (*state)[1][2] = (*state)[3][2];
+  (*state)[3][2] = decalage ;
 
-// Rotate third row 3 columns to left
-decalage          = (*state)[0][3];
-(*state)[0][3] = (*state)[3][3];
-(*state)[3][3] = (*state)[2][3];
-(*state)[2][3] = (*state)[1][3];
-(*state)[1][3] = decalage ;
+  // Rotate third row 3 columns to left
+  decalage          = (*state)[0][3];
+  (*state)[0][3] = (*state)[3][3];
+  (*state)[3][3] = (*state)[2][3];
+  (*state)[2][3] = (*state)[1][3];
+  (*state)[1][3] = decalage ;
 }
 
+void MixColumn(tableau2D* state){
+  return ;
+}
 
 // The round transformation is composed of four different transformations
 void Round(tableau2D* State, uint* RoundKey)  {
