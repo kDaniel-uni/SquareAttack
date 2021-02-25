@@ -15,7 +15,7 @@ void AddRoundKey(unsigned int *state,unsigned int* RoundKey){
   }
 }
 
-
+// The round transformation is composed of four different transformations
 void Round(unsigned int* State, unsigned int* RoundKey)  {
    Rcon(State); // The  ByteSub  Transformation  is  a  non-linear  byte  substitution,  operating  on  each  of  the  State  bytes  independently.
    RotWord(State); // In  ShiftRow,  the  rows  of  the  State  are  cyclically  shifted  over  different  offsets.
@@ -23,11 +23,14 @@ void Round(unsigned int* State, unsigned int* RoundKey)  {
    AddRoundKey(State,RoundKey);
 }
 
+
+// The final round of the cipher is slightly different
 void FinalRound(unsigned int* State, unsigned int* RoundKey)  {
   Rcon(State) ;
   RotWord(State) ;
   AddRoundKey(State,RoundKey);
 }
+
 
 void AES (unsigned int* State,unsigned int* CipherKey)  {
   KeyExpansion(CipherKey,ExpandedKey) ;
