@@ -7,9 +7,9 @@
 
 void KeyExpension();
 
-void RotWord(char text[4]);
+void RotWord(char word[4]);
 
-void SubWord();
+void SubWord(char word[4]);
 
 void Rcon();
 
