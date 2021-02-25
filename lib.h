@@ -7,13 +7,12 @@ The Round Key length is equal to the block length Nb.
 */
 void AddRoundKey(tableau2D *state,uint* RoundKey){
   int Nb = 4; //peut etre egal à 4 6 ou 8
-  int Nr = 4; //nombre de round
   int i,j;
   for (i = 0; i < 4; ++i)
   {
     for (j = 0; j < 4; ++j)
     {
-      (*state)[i][j] ^= RoundKey[(round * Nb * 4) + (i * Nb) + j];
+      (*state)[i][j] ^= RoundKey[i][j];
     }
   }
 }
