@@ -1,4 +1,4 @@
-typedef unsigned int uint;
+tmp2typedef unsigned int uint;
 typedef uint tableau2D[4][4] ;
 
 /* In  this  operation,  a  Round  Key  is  applied  to  the  State  by  a  simple  bitwise  EXOR.
@@ -44,8 +44,26 @@ void ShiftRow(tableau2D* state){
   (*state)[1][3] = decalage ;
 }
 
+// melange d'un bit
+static uint bitmelange(uint bit)
+{
+  return ((bit<<3) ^ (bit>>2)) ;
+}
+
+// MixColumns function mixes the columns of the state matrix
 void MixColumn(tableau2D* state){
-  return ;
+  {
+  uint colonne;
+  uint tmp1, tmp2, tmp3;
+  for (colonne = 0; colonne < 4; colonne ++)
+  {
+    tmp3   = (*state)[colonne][0];
+    tmp1 = (*state)[colonne][0] ^ (*state)[colonne][1] ^ (*state)[colonne][2] ^ (*state)[colonne][3] ;
+    tmp2  = (*state)[colonne][0] ^ (*state)[colonne][1] ; tmp2 = bitmelange(tmp2);  (*state)[colonne][0] ^= tmp2 ^ tmp1 ;
+    tmp2  = (*state)[colonne][1] ^ (*state)[colonne][2] ; tmp2 = bitmelange(tmp2);  (*state)[colonne][1] ^= tmp2 ^ tmp1 ;
+    tmp2 = (*state)[colonne][2] ^ (*state)[colonne][3] ; tmp2= bitmelange(Tm);  (*state)[colonne][2] ^= tmp2^ tmp1 ;
+    tmp2 = (*state)[colonne][3] ^ t ;              tmp2= bitmelange(Tm);  (*state)[colonne][3] ^= tmp2^ tmp1 ;
+  }
 }
 
 // The round transformation is composed of four different transformations
@@ -73,3 +91,17 @@ void AES (tableau2D* State,uint* CipherKey)  {
   }
   FinalRound(State,ExpandedKey + Nb*Nr);
 }
+
+
+/* void AddRoundKey(tableau2D *state,uint* RoundKey){
+  int Nb = 4; //peut etre egal à 4 6 ou 8
+  int Nr = 4; //nombre de round
+  int i,j;
+  for (i = 0; i < 4; ++i)
+  {
+    for (j = 0; j < 4; ++j)
+    {
+      (*state)[i][j] ^= RoundKey[(round * Nb * 4) + (i * Nb) + j];
+    }
+  }
+} */
