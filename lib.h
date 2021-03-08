@@ -1,5 +1,5 @@
-tmp2typedef unsigned int uint;
-typedef uint tableau2D[4][4] ;
+typedef unsigned char U8 ;
+typedef U8 tableau2D[4][4] ;
 
 /* In  this  operation,  a  Round  Key  is  applied  to  the  State  by  a  simple  bitwise  EXOR.
 The  Round  Key is derived from the Cipher Key by means of the key schedule.
@@ -45,7 +45,7 @@ void ShiftRow(tableau2D* state){
 }
 
 // melange d'un bit
-static uint bitmelange(uint bit)
+static U8 bitmelange(U8 bit)
 {
   return ((bit<<3) ^ (bit>>2)) ;
 }
@@ -53,8 +53,8 @@ static uint bitmelange(uint bit)
 // MixColumns function mixes the columns of the state matrix
 void MixColumn(tableau2D* state){
   {
-  uint ligne;
-  uint tmp1, tmp2;
+  U8 ligne;
+  U8 tmp1, tmp2;
   for (ligne = 0; ligne < 4; ligne ++)
   {
     tmp1 = (*state)[ligne][0] ^ (*state)[ligne][1] ^ (*state)[ligne][2] ^ (*state)[ligne][3] ;
@@ -74,7 +74,7 @@ void MixColumn(tableau2D* state){
 }
 
 // The round transformation is composed of four different transformations
-void Round(tableau2D* State, uint* RoundKey)  {
+void Round(tableau2D* State, U8* RoundKey)  {
    ByteSub(State); // The  ByteSub  Transformation  is  a  non-linear  byte  substitution,  operating  on  each  of  the  State  bytes  independently.
    ShiftRow(State); // In  ShiftRow,  the  rows  of  the  State  are  cyclically  shifted  over  different  offsets.
    MixColumn(State); // In  MixColumn,  the  columns  of  the  State  are  considered  as  polynomials  over  GF(28)  and  multiplied modulo x4 + 1 with a fixed polynomial c(x), given by c(x) = ‘03’ x3 + ‘01’ x2 + ‘01’ x+ ‘02’ .
@@ -83,14 +83,14 @@ void Round(tableau2D* State, uint* RoundKey)  {
 
 
 // The final round of the cipher is slightly different
-void FinalRound(tableau2D* State, uint* RoundKey)  {
+void FinalRound(tableau2D* State, U8* RoundKey)  {
   ByteSub(State) ;
   ShiftRow(State) ;
   AddRoundKey(State,RoundKey);
 }
 
 
-void AES (tableau2D* State,uint* CipherKey)  {
+void AES (tableau2D* State,U8* CipherKey)  {
   KeyExpansion(CipherKey,ExpandedKey) ;
   AddRoundKey(State,ExpandedKey);
   for(int  i=1 ; i<Nr ; i++ ){
@@ -100,7 +100,7 @@ void AES (tableau2D* State,uint* CipherKey)  {
 }
 
 
-/* void AddRoundKey(tableau2D *state,uint* RoundKey){
+/* void AddRoundKey(tableau2D *state,U8* RoundKey){
   int Nb = 4; //peut etre egal à 4 6 ou 8
   int Nr = 4; //nombre de round
   int i,j;
