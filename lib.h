@@ -53,16 +53,23 @@ static uint bitmelange(uint bit)
 // MixColumns function mixes the columns of the state matrix
 void MixColumn(tableau2D* state){
   {
-  uint colonne;
-  uint tmp1, tmp2, tmp3;
-  for (colonne = 0; colonne < 4; colonne ++)
+  uint ligne;
+  uint tmp1, tmp2;
+  for (ligne = 0; ligne < 4; ligne ++)
   {
-    tmp3   = (*state)[colonne][0];
-    tmp1 = (*state)[colonne][0] ^ (*state)[colonne][1] ^ (*state)[colonne][2] ^ (*state)[colonne][3] ;
-    tmp2  = (*state)[colonne][0] ^ (*state)[colonne][1] ; tmp2 = bitmelange(tmp2);  (*state)[colonne][0] ^= tmp2 ^ tmp1 ;
-    tmp2  = (*state)[colonne][1] ^ (*state)[colonne][2] ; tmp2 = bitmelange(tmp2);  (*state)[colonne][1] ^= tmp2 ^ tmp1 ;
-    tmp2 = (*state)[colonne][2] ^ (*state)[colonne][3] ; tmp2= bitmelange(Tm);  (*state)[colonne][2] ^= tmp2^ tmp1 ;
-    tmp2 = (*state)[colonne][3] ^ t ;              tmp2= bitmelange(Tm);  (*state)[colonne][3] ^= tmp2^ tmp1 ;
+    tmp1 = (*state)[ligne][0] ^ (*state)[ligne][1] ^ (*state)[ligne][2] ^ (*state)[ligne][3] ;
+    tmp2  = (*state)[ligne][0] ^ (*state)[ligne][1] ;
+    tmp2 = bitmelange(tmp2);
+    (*state)[ligne][0] ^= tmp2 ^ tmp1 ;
+    tmp2  = (*state)[ligne][1] ^ (*state)[ligne][2] ;
+    tmp2 = bitmelange(tmp2);
+    (*state)[ligne][1] ^= tmp2 ^ tmp1 ;
+    tmp2 = (*state)[ligne][2] ^ (*state)[ligne][3] ;
+    tmp2= bitmelange(tmp2);
+    (*state)[ligne][2] ^= tmp2 ^ tmp1 ;
+    tmp2 = (*state)[ligne][3] ^ (*state)[ligne][0];
+    tmp2= bitmelange(tmp2);
+    (*state)[ligne][3] ^= tmp2^ tmp1 ;
   }
 }
 
