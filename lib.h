@@ -1,7 +1,7 @@
 typedef unsigned char U8 ;
 typedef U8 tableau2D[4][4] ;
 
-/* In  this  operation,  a  Round  Key  is  applied  to  the  State  by  a  simple  bitwise  EXOR.
+/* In  this  operation,  a  Round  Key  is  applied  to  the  State  by  a  simple  bitwise XOR.
 The  Round  Key is derived from the Cipher Key by means of the key schedule.
 The Round Key length is equal to the block length Nb.
 */
