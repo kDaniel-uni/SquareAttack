@@ -1,6 +1,12 @@
 typedef unsigned char U8 ;
 typedef U8 tableau2D[4][4] ;
 
+// get the value of the pseudo matrix
+static uint8_t getSBoxValue(uint8_t num)
+{
+  return sbox[num];
+}
+
 /* In  this  operation,  a  Round  Key  is  applied  to  the  State  by  a  simple  bitwise XOR.
 The  Round  Key is derived from the Cipher Key by means of the key schedule.
 The Round Key length is equal to the block length Nb.
@@ -70,6 +76,20 @@ void MixColumn(tableau2D* state){
     tmp2 = (*state)[ligne][3] ^ (*state)[ligne][0];
     tmp2= bitmelange(tmp2);
     (*state)[ligne][3] ^= tmp2^ tmp1 ;
+  }
+}
+
+// The SubBytes Function Substitutes the values in the
+// state matrix with values in an S-box.
+static void SubBytes(tableau2D* state)
+{
+  U8 i, j;
+  for (i = 0; i < 4; ++i)
+  {
+    for (j = 0; j < 4; ++j)
+    {
+      (*state)[j][i] = getValue((*state)[j][i]);
+    }
   }
 }
 
