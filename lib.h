@@ -2,7 +2,7 @@ typedef unsigned char U8 ;
 typedef U8 tableau2D[4][4] ;
 
 // get the value of the pseudo matrix
-static uint8_t getSBoxValue(uint8_t num)
+static U8 getSBoxValue(U8 num)
 {
   return sbox[num];
 }
