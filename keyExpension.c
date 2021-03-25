@@ -86,7 +86,7 @@ U8* Rcon(unsigned int index) {
 tableau2D ParseKey(U8* key) {
     
     assert(key != NULL);
-    //assert(strlen(key) == 16);
+    //assert(strnlen(key, 500) == 16);
 
     tableau2D columns = (tableau2D)malloc(4 * sizeof(U8*));
 
@@ -141,8 +141,8 @@ U8* ArrayXor(U8* first, U8* second) {
 
     //printf("%li  %li\n", strlen(first), strlen(second));
 
-    //assert(strlen(first) == 4);
-    //assert(strlen(second) == 4);
+    //assert(strnlen(first, 500) == 4);
+    //assert(strnlen(second, 500) == 4);
 
     U8* xor = malloc(sizeof(char) * 4);
 
@@ -155,7 +155,7 @@ U8* ArrayXor(U8* first, U8* second) {
 
 U8* KeyExpension(U8* key) {
 
-    //assert(strlen(key) == 16);
+    //assert(strnlen(key,500) == 16);
 
     U8* finalKey = key;
 
