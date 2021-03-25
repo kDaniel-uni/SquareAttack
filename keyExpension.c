@@ -86,7 +86,7 @@ U8* Rcon(unsigned int index) {
 tableau2D ParseKey(U8* key) {
     
     assert(key != NULL);
-    assert(strlen(key) == 16);
+    //assert(strlen(key) == 16);
 
     tableau2D columns = (tableau2D)malloc(4 * sizeof(U8*));
 
@@ -118,18 +118,17 @@ tableau2D NextRoundKey(tableau2D previousKey, int roundNumber) {
     tableau2D columns = (tableau2D)malloc(4 * sizeof(U8*));
 
     U8* buffer = malloc(sizeof(char) * 4);
-    printf("%li\n", strlen(previousKey[3]));
     buffer = previousKey[3];
-    printf("%li\n", strlen(buffer));
+    //printf("%hhX %hhX %hhX %hhX\n", buffer[0], buffer[1], buffer[2], buffer[3]);
     RotWord(buffer);
-    printf("%li\n", strlen(buffer));
+    //printf("%hhX %hhX %hhX %hhX\n", buffer[0], buffer[1], buffer[2], buffer[3]);
     SubWord(buffer);
 
-    printf("%li\n", strlen(buffer));
+    //printf("%hhX %hhX %hhX %hhX\n", buffer[0], buffer[1], buffer[2], buffer[3]);
 
     U8* xorBuffer = malloc(sizeof(char) * 4);
     xorBuffer = ArrayXor(buffer, previousKey[0]);
-    columns[0] = ArrayXor(xorBuffer, Rcon(roundNumber));
+    columns[0] = ArrayXor( Rcon(roundNumber), xorBuffer);
 
     for (int index = 1; index < 4; index++) {
         columns[index] = ArrayXor(columns[index - 1], previousKey[index]);
@@ -140,10 +139,10 @@ tableau2D NextRoundKey(tableau2D previousKey, int roundNumber) {
 
 U8* ArrayXor(U8* first, U8* second) {
 
-    printf("%li  %li\n", strlen(first), strlen(second));
+    //printf("%li  %li\n", strlen(first), strlen(second));
 
-    assert(strlen(first) == 4);
-    assert(strlen(second) == 4);
+    //assert(strlen(first) == 4);
+    //assert(strlen(second) == 4);
 
     U8* xor = malloc(sizeof(char) * 4);
 
@@ -156,13 +155,14 @@ U8* ArrayXor(U8* first, U8* second) {
 
 U8* KeyExpension(U8* key) {
 
-    assert(strlen(key) == 16);
+    //assert(strlen(key) == 16);
 
     U8* finalKey = key;
 
     tableau2D previousRoundKey = ParseKey(key);
 
     for (int roundIndex = 1; roundIndex < 11; roundIndex++) {
+        printf("Entered loop nb : %i\n", roundIndex);
         previousRoundKey = NextRoundKey(previousRoundKey, roundIndex);
         strcat(finalKey, ParseTableau(previousRoundKey));
     }
