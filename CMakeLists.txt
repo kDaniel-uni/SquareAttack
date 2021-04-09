@@ -10,7 +10,7 @@ set(CMAKE_C_FLAGS "-std=c99 -g3 -Wall --coverage")
 add_executable(main main.c)
 add_executable(testKeyExpension testKeyExpension.c)
 
-add_library(lib keyExpension.c lib.h)
+add_library(lib keyExpension.c aes.c)
 
 target_link_libraries(main lib)
 target_link_libraries(testKeyExpension lib)
