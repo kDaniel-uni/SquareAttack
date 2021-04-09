@@ -1,10 +1,16 @@
+#include <stdio.h>
+#include <string.h>
+
 typedef unsigned char U8 ;
 typedef U8 tableau2D[4][4] ;
 
+static const U8 Rcon[11] = {
+  0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36
+};
 // get the value of the pseudo matrix
-static U8 getSBoxValue(U8 num)
+U8 getSBoxValue(U8 num)
 {
-  return sbox[num];
+  return Rcon[num];
 }
 
 /* In  this  operation,  a  Round  Key  is  applied  to  the  State  by  a  simple  bitwise XOR.
@@ -51,14 +57,13 @@ void ShiftRow(tableau2D* state){
 }
 
 // melange d'un bit
-static U8 bitmelange(U8 bit)
+U8 bitmelange(U8 bit)
 {
   return ((bit<<3) ^ (bit>>2)) ;
 }
 
 // MixColumns function mixes the columns of the state matrix
-void MixColumn(tableau2D* state){
-  {
+void MixColumn(tableau2D *state){
   U8 ligne;
   U8 tmp1, tmp2;
   for (ligne = 0; ligne < 4; ligne ++)
@@ -81,7 +86,7 @@ void MixColumn(tableau2D* state){
 
 // The SubBytes Function Substitutes the values in the
 // state matrix with values in an S-box.
-static void SubBytes(tableau2D* state)
+void SubBytes(tableau2D *state)
 {
   U8 i, j;
   for (i = 0; i < 4; ++i)
@@ -95,14 +100,14 @@ static void SubBytes(tableau2D* state)
 
 // The SubBytes Function Substitutes the values in the
 // state matrix with values in an S-box.
-static void InvSubBytes(tableau2D* state)
+void InvSubBytes(tableau2D *state)
 {
   U8 i, j;
   for (i = 0; i < 4; ++i)
   {
     for (j = 0; j < 4; ++j)
     {
-      (*state)[j][i] = ... ; // not finish
+      //(*state)[j][i] = ... ; // not finish
     }
   }
 }
@@ -110,7 +115,7 @@ static void InvSubBytes(tableau2D* state)
 // MixColumns function mixes the columns of the state matrix.
 // The method used to multiply may be difficult to understand for the inexperienced.
 // Please use the references to gain more information.
-static void InvMixColumns(tableau2D* state)
+void InvMixColumns(tableau2D *state)
 {
   int i;
   U8 a, b, c, d;
@@ -129,7 +134,7 @@ static void InvMixColumns(tableau2D* state)
 }
 
 // The round transformation is composed of four different transformations
-void Round(tableau2D* State, U8* RoundKey)  {
+void Round(tableau2D *State, U8 *RoundKey)  {
    ByteSub(State); // The  ByteSub  Transformation  is  a  non-linear  byte  substitution,  operating  on  each  of  the  State  bytes  independently.
    ShiftRow(State); // In  ShiftRow,  the  rows  of  the  State  are  cyclically  shifted  over  different  offsets.
    MixColumn(State); // In  MixColumn,  the  columns  of  the  State  are  considered  as  polynomials  over  GF(28)  and  multiplied modulo x4 + 1 with a fixed polynomial c(x), given by c(x) = ‘03’ x3 + ‘01’ x2 + ‘01’ x+ ‘02’ .
@@ -145,7 +150,9 @@ void FinalRound(tableau2D* State, U8* RoundKey)  {
 }
 
 
-void AES (tableau2D* State,U8* CipherKey)  {
+void AES (tableau2D* State,U8* CipherKey,U8* ExpandedKey)  {
+  int Nb = 4;
+  int Nr = 10;
   KeyExpansion(CipherKey,ExpandedKey) ;
   AddRoundKey(State,ExpandedKey);
   for(int  i=1 ; i<Nr ; i++ ){
