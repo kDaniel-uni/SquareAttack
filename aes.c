@@ -93,6 +93,41 @@ static void SubBytes(tableau2D* state)
   }
 }
 
+// The SubBytes Function Substitutes the values in the
+// state matrix with values in an S-box.
+static void InvSubBytes(tableau2D* state)
+{
+  U8 i, j;
+  for (i = 0; i < 4; ++i)
+  {
+    for (j = 0; j < 4; ++j)
+    {
+      (*state)[j][i] = ... ; // not finish
+    }
+  }
+}
+
+// MixColumns function mixes the columns of the state matrix.
+// The method used to multiply may be difficult to understand for the inexperienced.
+// Please use the references to gain more information.
+static void InvMixColumns(tableau2D* state)
+{
+  int i;
+  U8 a, b, c, d;
+  for (i = 0; i < 4; ++i)
+  {
+    a = (*state)[i][0];
+    b = (*state)[i][1];
+    c = (*state)[i][2];
+    d = (*state)[i][3];
+
+    (*state)[i][0] = Multiply(a, 0x0e) ^ Multiply(b, 0x0b) ^ Multiply(c, 0x0d) ^ Multiply(d, 0x09);
+    (*state)[i][1] = Multiply(a, 0x09) ^ Multiply(b, 0x0e) ^ Multiply(c, 0x0b) ^ Multiply(d, 0x0d);
+    (*state)[i][2] = Multiply(a, 0x0d) ^ Multiply(b, 0x09) ^ Multiply(c, 0x0e) ^ Multiply(d, 0x0b);
+    (*state)[i][3] = Multiply(a, 0x0b) ^ Multiply(b, 0x0d) ^ Multiply(c, 0x09) ^ Multiply(d, 0x0e);
+  }
+}
+
 // The round transformation is composed of four different transformations
 void Round(tableau2D* State, U8* RoundKey)  {
    ByteSub(State); // The  ByteSub  Transformation  is  a  non-linear  byte  substitution,  operating  on  each  of  the  State  bytes  independently.
