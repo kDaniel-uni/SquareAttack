@@ -96,19 +96,29 @@ tableau2D ParseKey(U8* key) {
         columns[index][1] = key[4*index + 1];
         columns[index][2] = key[4*index + 2];
         columns[index][3] = key[4*index + 3];
+        printf("%02x%02x%02x%02x", columns[index][0], columns[index][1], columns[index][2], columns[index][3]);
     }
-
+    printf("\n");
     return columns;
 
 }
 
 U8* ParseTableau(tableau2D tableau) {
 
-    U8* result = malloc(sizeof(char) * 16);
+    U8* result = malloc(sizeof(U8) * 16);
 
     for (int index = 0; index < 4; index++) {
-        strcat(result, tableau[index]);
+        size_t l2 = strnlen(tableau[index], 4);
+
+        memcpy(result, tableau[index], l2);
+        
+        printf("%02x%02x%02x%02x\n", tableau[index][0], tableau[index][1], tableau[index][2], tableau[index][3]);
     }
+
+    for (int index = 0; index < strnlen(result, 2048); index++) {
+        printf("%02x", result[index]);
+    }
+    printf("\n");
 
     return result;
 }
@@ -117,14 +127,16 @@ tableau2D NextRoundKey(tableau2D previousKey, int roundNumber) {
 
     tableau2D columns = (tableau2D)malloc(4 * sizeof(U8*));
 
-    U8* buffer = malloc(sizeof(char) * 4);
-    buffer = previousKey[3];
-    //printf("%hhX %hhX %hhX %hhX\n", buffer[0], buffer[1], buffer[2], buffer[3]);
+    U8* buffer = malloc(sizeof(U8) * 4);
+    buffer[0] = previousKey[3][0];
+    buffer[1] = previousKey[3][1];
+    buffer[2] = previousKey[3][2];
+    buffer[3] = previousKey[3][3];
+
     RotWord(buffer);
-    //printf("%hhX %hhX %hhX %hhX\n", buffer[0], buffer[1], buffer[2], buffer[3]);
+
     SubWord(buffer);
 
-    //printf("%hhX %hhX %hhX %hhX\n", buffer[0], buffer[1], buffer[2], buffer[3]);
 
     U8* xorBuffer = malloc(sizeof(char) * 4);
     xorBuffer = ArrayXor(buffer, previousKey[0]);
@@ -144,7 +156,7 @@ U8* ArrayXor(U8* first, U8* second) {
     //assert(strnlen(first, 500) == 4);
     //assert(strnlen(second, 500) == 4);
 
-    U8* xor = malloc(sizeof(char) * 4);
+    U8* xor = malloc(sizeof(U8) * 4);
 
     for (int index = 0; index < 4; index++) {
         xor[index] = (U8)(first[index] ^ second[index]);
@@ -157,15 +169,41 @@ U8* KeyExpension(U8* key) {
 
     //assert(strnlen(key,500) == 16);
 
-    U8* finalKey = key;
+    U8* finalKey = malloc(sizeof(U8)*256);
+
+    for (int index = 0; index < strnlen(key, 16); index++) {
+        finalKey[index] = key[index];
+        printf("%02x", key[index]);
+    }
+    printf("\n");
 
     tableau2D previousRoundKey = ParseKey(key);
 
     for (int roundIndex = 1; roundIndex < 11; roundIndex++) {
         printf("Entered loop nb : %i\n", roundIndex);
         previousRoundKey = NextRoundKey(previousRoundKey, roundIndex);
-        strcat(finalKey, ParseTableau(previousRoundKey));
+        U8* parsed = ParseTableau(previousRoundKey);
+
+        for (int index = 0; index < strnlen(parsed, 2048); index++) {
+            printf("%02x", parsed[index]);
+        }
+        printf("\n");
+
+        finalKey = concat(finalKey, parsed);
     }
 
     return finalKey;
+}
+
+U8* concat(U8* str1, U8* str2) {
+    size_t l1 = strnlen(str1,2048);
+    size_t l2 = strnlen(str2,2048);
+
+    printf("Size : %li - %li \n", l1, l2);
+
+    U8* result = malloc(l1 + l2 + 1);
+    if (!result) return result;
+    memcpy(result, str1, l1);
+    memcpy(result + l1, str2, l2 + 1);
+    return result;
 }
