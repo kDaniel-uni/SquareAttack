@@ -128,9 +128,11 @@ key ParseTableau(tableau2D tableau) {
 
 column ArrayXor(column first, column second) {
 
+    assert(first.size() == second.size());
+
     column xorResult;
 
-    for (int index = 0; index < 4; index++) {
+    for (int index = 0; index < first.size(); index++) {
         xorResult.push_back((uint8_t)(first[index] ^ second[index]));
     }
 
