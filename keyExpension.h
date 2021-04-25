@@ -5,28 +5,26 @@
 #ifndef __KEYEXPENSION_H__
 #define __KEYEXPENSION_H__
 
-typedef unsigned char U8;
-typedef U8** tableau2D;
+#include "tools.h"
 
-void SBox(U8 word);
+void SBox(uint8_t word);
 
-void RotWord(U8 word[4]);
+column RotWord(column column);
 
-void SubWord(U8 word[4]);
+column SubWord(column column);
 
-U8* Rcon(unsigned int index);
+column Rcon(unsigned int index);
 
-U8* KeyExpension(U8* key);
+key KeyExpension(key key);
 
-tableau2D ParseKey(U8* key);
+tableau2D ParseKey(key key);
 
-U8* ParseTableau(tableau2D tableau);
+key ParseTableau(tableau2D tableau);
 
 tableau2D NextRoundKey(tableau2D previousKey, int roundNumber);
 
-U8* ArrayXor(U8* first, U8* second);
+column ArrayXor(column first, column second);
 
-U8* concat(U8* str1, U8* str2);
-
+void concat(key destination, key toConcat);
 
 #endif

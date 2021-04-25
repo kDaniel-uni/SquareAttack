@@ -3,13 +3,8 @@
  **/
 
 #include "keyExpension.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
-#include <string.h>
-#include <memory.h>
 
-U8 comparison_table[256] = {
+uint8_t comparison_table[256] = {
     0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
     0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
     0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15,
@@ -28,7 +23,7 @@ U8 comparison_table[256] = {
     0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
 };
 
-U8 rcon[256] = {
+uint8_t rconTable[256] = {
     0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a,
     0x2f, 0x5e, 0xbc, 0x63, 0xc6, 0x97, 0x35, 0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91, 0x39,
     0x72, 0xe4, 0xd3, 0xbd, 0x61, 0xc2, 0x9f, 0x25, 0x4a, 0x94, 0x33, 0x66, 0xcc, 0x83, 0x1d, 0x3a,
@@ -47,75 +42,72 @@ U8 rcon[256] = {
     0x61, 0xc2, 0x9f, 0x25, 0x4a, 0x94, 0x33, 0x66, 0xcc, 0x83, 0x1d, 0x3a, 0x74, 0xe8, 0xcb, 0x8d
 };
 
-void SBox(U8 word) {
+void SBox(uint8_t word) {
 
-    U8 high = word >> 4;
-    U8 low = word & 0x0F;
+    uint8_t high = word >> 4;
+    uint8_t low = word & 0x0F;
     word = comparison_table[high * 16 + low];
 }
 
-void RotWord(U8 word[4]) {
+column RotWord(column srcColumn) {
 
-	U8 buffer = word[0];
-	word[0] = word[1];
-	word[1] = word[2];
-	word[2] = word[3];
-	word[3] = buffer;
+    srcColumn.push_back(srcColumn.front());
+    srcColumn.erase(srcColumn.begin());
+    return srcColumn;
 }
 
-void SubWord(U8 word[4]) {
+column SubWord(column column) {
 
     for (int i = 0; i < 4; i++) {
-        U8 high = word[i]>>4;
-        U8 low = word[i]&0x0F;
-        word[i] = comparison_table[high * 16 + low];
+        uint8_t high = column[i]>>4;
+        uint8_t low = column[i]&0x0F;
+        column[i] = comparison_table[high * 16 + low];
     }
+
+    return column;
 }
 
-U8* Rcon(unsigned int index) {
+column Rcon(unsigned int index) {
 
     assert(index < 256);
-    U8* word = malloc(sizeof(char) * 4);
-    word[0] = rcon[index];
-    word[1] = 0x00;
-    word[2] = 0x00;
-    word[3] = 0x00;
-    return word;
+    column column;
+    column[0] = rconTable[index];
+    column[1] = 0x00;
+    column[2] = 0x00;
+    column[3] = 0x00;
+    return column;
 }
 
-tableau2D ParseKey(U8* key) {
+tableau2D ParseKey(key key) {
     
-    assert(key != NULL);
-    //assert(strnlen(key, 500) == 16);
+    assert(key.size() == 16);
 
-    tableau2D columns = (tableau2D)malloc(4 * sizeof(U8*));
+    tableau2D parsedKey;
 
     for (int index = 0; index < 4; index++) {
-        columns[index] = (U8*)malloc(4 * sizeof(U8));
-        columns[index][0] = key[4*index];
-        columns[index][1] = key[4*index + 1];
-        columns[index][2] = key[4*index + 2];
-        columns[index][3] = key[4*index + 3];
-        printf("%02x%02x%02x%02x", columns[index][0], columns[index][1], columns[index][2], columns[index][3]);
+        parsedKey[index][0] = key[4*index];
+        parsedKey[index][1] = key[4*index + 1];
+        parsedKey[index][2] = key[4*index + 2];
+        parsedKey[index][3] = key[4*index + 3];
+        printf("%02x%02x%02x%02x", parsedKey[index][0], parsedKey[index][1], parsedKey[index][2], parsedKey[index][3]);
     }
     printf("\n");
-    return columns;
+    return parsedKey;
 
 }
 
-U8* ParseTableau(tableau2D tableau) {
+key ParseTableau(tableau2D tableau) {
 
-    U8* result = malloc(sizeof(U8) * 16);
+    key result;
 
     for (int index = 0; index < 4; index++) {
-        size_t l2 = strnlen(tableau[index], 4);
-
-        memcpy(result, tableau[index], l2);
+        
+        concat(result, tableau[index]);
         
         printf("%02x%02x%02x%02x\n", tableau[index][0], tableau[index][1], tableau[index][2], tableau[index][3]);
     }
 
-    for (int index = 0; index < strnlen(result, 2048); index++) {
+    for (size_t index = 0; index < result.size(); index++) {
         printf("%02x", result[index]);
     }
     printf("\n");
@@ -125,9 +117,9 @@ U8* ParseTableau(tableau2D tableau) {
 
 tableau2D NextRoundKey(tableau2D previousKey, int roundNumber) {
 
-    tableau2D columns = (tableau2D)malloc(4 * sizeof(U8*));
+    tableau2D columns;
 
-    U8* buffer = malloc(sizeof(U8) * 4);
+    std::vector<uint8_t> buffer;
     buffer[0] = previousKey[3][0];
     buffer[1] = previousKey[3][1];
     buffer[2] = previousKey[3][2];
@@ -138,7 +130,7 @@ tableau2D NextRoundKey(tableau2D previousKey, int roundNumber) {
     SubWord(buffer);
 
 
-    U8* xorBuffer = malloc(sizeof(char) * 4);
+    column xorBuffer;
     xorBuffer = ArrayXor(buffer, previousKey[0]);
     columns[0] = ArrayXor( Rcon(roundNumber), xorBuffer);
 
@@ -149,61 +141,55 @@ tableau2D NextRoundKey(tableau2D previousKey, int roundNumber) {
     return columns;
 }
 
-U8* ArrayXor(U8* first, U8* second) {
+column ArrayXor(column first, column second) {
 
     //printf("%li  %li\n", strlen(first), strlen(second));
 
     //assert(strnlen(first, 500) == 4);
     //assert(strnlen(second, 500) == 4);
 
-    U8* xor = malloc(sizeof(U8) * 4);
+    column xorResult;
 
     for (int index = 0; index < 4; index++) {
-        xor[index] = (U8)(first[index] ^ second[index]);
+        xorResult[index] = (uint8_t)(first[index] ^ second[index]);
     }
 
-    return xor;
+    return xorResult;
 }
 
-U8* KeyExpension(U8* key) {
+key KeyExpension(key originKey) {
 
     //assert(strnlen(key,500) == 16);
 
-    U8* finalKey = malloc(sizeof(U8)*256);
+    key finalKey;
 
-    for (int index = 0; index < strnlen(key, 16); index++) {
-        finalKey[index] = key[index];
-        printf("%02x", key[index]);
+    for (size_t index = 0; index < originKey.size(); index++) {
+        finalKey[index] = originKey[index];
+        printf("%02x", originKey[index]);
     }
     printf("\n");
 
-    tableau2D previousRoundKey = ParseKey(key);
+    tableau2D previousRoundKey = ParseKey(originKey);
 
     for (int roundIndex = 1; roundIndex < 11; roundIndex++) {
         printf("Entered loop nb : %i\n", roundIndex);
         previousRoundKey = NextRoundKey(previousRoundKey, roundIndex);
-        U8* parsed = ParseTableau(previousRoundKey);
+        key parsed = ParseTableau(previousRoundKey);
 
-        for (int index = 0; index < strnlen(parsed, 2048); index++) {
+        for (size_t index = 0; index < parsed.size(); index++) {
             printf("%02x", parsed[index]);
         }
         printf("\n");
 
-        finalKey = concat(finalKey, parsed);
+        concat(finalKey, parsed);
     }
 
     return finalKey;
 }
 
-U8* concat(U8* str1, U8* str2) {
-    size_t l1 = strnlen(str1,2048);
-    size_t l2 = strnlen(str2,2048);
-
-    printf("Size : %li - %li \n", l1, l2);
-
-    U8* result = malloc(l1 + l2 + 1);
-    if (!result) return result;
-    memcpy(result, str1, l1);
-    memcpy(result + l1, str2, l2 + 1);
-    return result;
+void concat(key destination, key toConcat) {
+    
+    for (size_t i = 0; i < toConcat.size(); i++) {
+        destination.push_back(toConcat[i]);
+    }
 }
