@@ -14,9 +14,9 @@
 #include <iostream>
 
 
-column RotWord(column column);
+column Shift(column column, int shiftNb = 1, bool isReverse = false);
 
-column SubWord(column column);
+column SBox(column column, bool isReverse = false);
 
 column Rcon(unsigned int index);
 
@@ -42,5 +42,6 @@ inline HexCharStruct hex(uint8_t _c)
 	return HexCharStruct(_c);
 }
 
+tableau2D createState(std::string plainText);
 
 #endif

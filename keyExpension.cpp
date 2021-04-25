@@ -19,7 +19,7 @@ tableau2D NextRoundKey(tableau2D previousKey, int roundNumber) {
 
     columns.push_back(ArrayXor( Rcon(roundNumber), xorBuffer));
 
-    for (int index = 1; index < 4; index++) {
+    for (size_t index = 1; index < 4; index++) {
         columns.push_back(ArrayXor(columns[index - 1], previousKey[index]));
     }
 

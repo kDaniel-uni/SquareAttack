@@ -6,10 +6,10 @@
 #include <stdio.h>
 #include <string.h>
 
-int test_RotWord() {
+int test_Shift() {
 	column testCol = { 0x00, 0x01, 0x02, 0x03 };
 	column verifCol = { 0x01, 0x02, 0x03, 0x00 };
-	testCol = RotWord(testCol);
+	testCol = Shift(testCol);
 
 	if (testCol != verifCol) {
 		return 1;
@@ -18,11 +18,11 @@ int test_RotWord() {
 	return 0;
 }
 
-int test_SubWord() {
+int test_SBox() {
 	column testCol = { 0x01, 0xc2, 0x9e, 0x00 };
 	column verifCol = { 0x7c, 0x25, 0x0b, 0x63 };
 
-	testCol = SubWord(testCol);
+	testCol = SBox(testCol);
 
 	if (testCol != verifCol) {
 		return 1;
@@ -150,11 +150,11 @@ void generalTest() {
 
 	printVector(test);
 
-	test = RotWord(test);
+	test = Shift(test);
 
 	printVector(test);
 
-	test = SubWord(test);
+	test = SBox(test);
 
 	printVector(test);
 
@@ -162,19 +162,23 @@ void generalTest() {
 
 	key testKey = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
 
-	printVector(testKey);
+	//printVector(testKey);
 
 	key result = KeyExpension(testKey);
 
 	//printVector(result);
 
-	for (size_t index = 0; index < result.size(); index++) {
+	std::string testString = "this is one text";
+
+	printTableau(createState(testString));
+
+	/*for (size_t index = 0; index < result.size(); index++) {
 		printf("%02x", result[index]);
 		if (((index + 1) % 16) == 0) {
 			printf("\n");
 		}
 	}
-	printf("\n");
+	printf("\n");*/
 }
 
 int main(int argc, char* argv[]) {
@@ -184,11 +188,11 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 
-	if (strcmp("RotWord", argv[1]) == 0) {
-		return test_RotWord();
+	if (strcmp("Shift", argv[1]) == 0) {
+		return test_Shift();
 	}
-	else if (strcmp("SubWord", argv[1]) == 0) {
-		return test_SubWord();
+	else if (strcmp("SBox", argv[1]) == 0) {
+		return test_SBox();
 	}
 	else if (strcmp("Rcon", argv[1]) == 0) {
 		return test_Rcon();
