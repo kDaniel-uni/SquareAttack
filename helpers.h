@@ -2,32 +2,35 @@
  * Projet tutoré SquareAttack
  **/
 
-#ifndef __TOOLS_H__
-#define __TOOLS_H__
+#ifndef __HELPERS_H__
+#define __HELPERS_H__
 
-#include <cstdint>
-#include <vector>
+#include "types.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
 #include <memory.h>
 #include <iostream>
-#include <iomanip>
 
 
-typedef std::vector<uint8_t> key;
+column RotWord(column column);
 
-typedef std::vector<uint8_t> column;
+column SubWord(column column);
 
-typedef std::vector<column> tableau2D;
+column Rcon(unsigned int index);
 
+tableau2D ParseKey(key key);
 
-struct HexCharStruct
-{
-	uint8_t c;
-	HexCharStruct(uint8_t _c) : c(_c) { }
-};
+key ParseTableau(tableau2D tableau);
+
+column ArrayXor(column first, column second);
+
+key concat(key destination, key toConcat);
+
+void printTableau(tableau2D tab);
+
+void printVector(std::vector<uint8_t> vec);
 
 inline std::ostream& operator<<(std::ostream& o, const HexCharStruct& hs)
 {
@@ -39,7 +42,5 @@ inline HexCharStruct hex(uint8_t _c)
 	return HexCharStruct(_c);
 }
 
-void printTableau(tableau2D tab);
 
-void printVector(std::vector<uint8_t> vec);
 #endif
