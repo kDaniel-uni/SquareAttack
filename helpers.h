@@ -14,7 +14,7 @@
 #include <iostream>
 
 
-column Shift(column column, int shiftNb = 1, bool isReverse = false);
+column Shift(column column, unsigned int shiftNb = 1, bool isReverse = false);
 
 column SBox(column column, bool isReverse = false);
 
