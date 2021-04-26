@@ -6,12 +6,13 @@ The  Round  Key is derived from the Cipher Key by means of the key schedule.
 The Round Key length is equal to the block length Nb.
 */
 tableau2D AddRoundKey(tableau2D state, tableau2D RoundKey){
-
+    tableau2D result ;
     for (size_t i = 0; i < 4; i++) {
-        state[i] = ArrayXor(state[i], RoundKey[i]);
+      column test = ArrayXor(state[i], RoundKey[i]);
+      result.push_back(test);
     }
 
-    return state;
+    return result;
 }
 
 tableau2D ShiftRow(tableau2D state){
@@ -23,7 +24,7 @@ tableau2D ShiftRow(tableau2D state){
     for (size_t i = 0; i < 4; i++) {
         Shift(rowsTab[i], i);
     }
-    
+
     buffer = ParseTableauRows(rowsTab);
 
     return ParseKey(buffer);
