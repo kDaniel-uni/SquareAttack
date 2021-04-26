@@ -10,8 +10,7 @@ set(CMAKE_CXX_FLAGS "-std=c++17 -g3 -Wall --coverage")
 add_executable(main main.cpp)
 add_executable(testKeyExpension testKeyExpension.cpp)
 
-#add_library(lib keyExpension.cpp aes.cpp)
-add_library(lib keyExpension.cpp helpers.cpp)
+add_library(lib keyExpension.cpp helpers.cpp aes.cpp)
 
 target_link_libraries(main lib)
 target_link_libraries(testKeyExpension lib)

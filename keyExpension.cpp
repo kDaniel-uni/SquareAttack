@@ -10,9 +10,9 @@ tableau2D NextRoundKey(tableau2D previousKey, int roundNumber) {
 
     column buffer = previousKey[3];
 
-    buffer = RotWord(buffer);
+    buffer = Shift(buffer);
 
-    buffer = SubWord(buffer);
+    buffer = SBox(buffer);
 
     column xorBuffer;
     xorBuffer = ArrayXor(buffer, previousKey[0]);
@@ -44,6 +44,4 @@ key KeyExpension(key originKey) {
     }
 
     return finalKey;
-
-    
 }

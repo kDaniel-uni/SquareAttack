@@ -20,9 +20,15 @@ column SBox(column column, bool isReverse = false);
 
 column Rcon(unsigned int index);
 
+uint8_t LookupTable(uint8_t index, int tableIndex);
+
 tableau2D ParseKey(key key);
 
+tableau2D ParseKeyRows(key key);
+
 key ParseTableau(tableau2D tableau);
+
+key ParseTableauRows(tableau2D tableau);
 
 column ArrayXor(column first, column second);
 
@@ -43,5 +49,9 @@ inline HexCharStruct hex(uint8_t _c)
 }
 
 tableau2D createState(std::string plainText);
+
+column mixCol(column toMix, bool isReverse);
+
+key getNextRoundKey(key* srcKey);
 
 #endif
