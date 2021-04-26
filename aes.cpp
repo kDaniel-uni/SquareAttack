@@ -56,9 +56,9 @@ tableau2D SubBytes(tableau2D state, bool isReverse)
 tableau2D Round(tableau2D state, tableau2D roundKey, bool isReverse)  {
     if (isReverse)  {
         state = AddRoundKey(state, roundKey);
-        state = SubBytes(state, isReverse);
-        state = ShiftRow(state, isReverse);
         state = MixColumns(state, isReverse);
+        state = ShiftRow(state, isReverse);
+        state = SubBytes(state, isReverse);
     }
     else {
         state = SubBytes(state, isReverse); // The  ByteSub  Transformation  is  a  non-linear  byte  substitution,  operating  on  each  of  the  State  bytes  independently.
@@ -75,8 +75,8 @@ tableau2D Round(tableau2D state, tableau2D roundKey, bool isReverse)  {
 tableau2D FinalRound(tableau2D state, tableau2D roundKey, bool isReverse) {
     if (isReverse) {
         state = AddRoundKey(state, roundKey);
-        state = SubBytes(state, isReverse);
         state = ShiftRow(state, isReverse);
+        state = SubBytes(state, isReverse);
     }
     else {
         state = SubBytes(state, isReverse);
