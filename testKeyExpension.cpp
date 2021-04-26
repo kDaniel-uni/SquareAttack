@@ -3,8 +3,6 @@
  **/
 
 #include "keyExpension.h"
-#include <stdio.h>
-#include <string.h>
 
 int test_Shift() {
 	column testCol = { 0x00, 0x01, 0x02, 0x03 };

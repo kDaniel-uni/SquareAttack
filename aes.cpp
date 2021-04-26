@@ -1,4 +1,4 @@
-#include "helpers.h"
+#include "AES.h"
 #include "keyExpension.h"
 
 /* In  this  operation,  a  Round  Key  is  applied  to  the  State  by  a  simple  bitwise XOR.
@@ -70,27 +70,15 @@ tableau2D FinalRound(tableau2D state, tableau2D roundKey)  {
 }
 
 
-void AES (tableau2D State, key cipherKey)   {
+tableau2D AES (tableau2D state, key cipherKey)   {
   int Nr = 10;
   key expandedKey = KeyExpension(cipherKey);
-  key* ptrToexpandedKey = &expandedKey;
-  AddRoundKey(State, ParseKey(getNextRoundKey(ptrToexpandedKey)));
+
+  state = AddRoundKey(state, ParseKey(getNextRoundKey(&expandedKey)));
   for(int  i=1 ; i<Nr ; i++ ){
-    Round(State, ParseKey(getNextRoundKey(ptrToexpandedKey))) ;
+    state = Round(state, ParseKey(getNextRoundKey(&expandedKey))) ;
   }
-  FinalRound(State, ParseKey(getNextRoundKey(ptrToexpandedKey)));
+  state = FinalRound(state, ParseKey(getNextRoundKey(&expandedKey)));
+
+  return state;
 }
-
-
-/* void AddRoundKey(tableau2D *state,uint8_t* RoundKey){
-  int Nb = 4; //peut etre egal à 4 6 ou 8
-  int Nr = 4; //nombre de round
-  int i,j;
-  for (i = 0; i < 4; ++i)
-  {
-    for (j = 0; j < 4; ++j)
-    {
-      (*state)[i][j] ^= RoundKey[(round * Nb * 4) + (i * Nb) + j];
-    }
-  }
-} */
