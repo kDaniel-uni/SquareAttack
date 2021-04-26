@@ -177,8 +177,10 @@ tableau2D createState(std::string plainText) {
 }
 
 column mixCol(column srcCol, bool isReverse) {
-    uint8_t buffer;
+    column result;
     for (size_t i = 0; i < 4; i++) {
+        uint8_t buffer;
+        uint8_t xorSum = 0x00;
         for (size_t matrixIndex = 0; matrixIndex < 4; matrixIndex++) {
             if (isReverse) {
                 buffer = LookupTable(srcCol[matrixIndex], decypherMatrix[i * 4 + matrixIndex]);
@@ -186,10 +188,11 @@ column mixCol(column srcCol, bool isReverse) {
             else {
                 buffer = LookupTable(srcCol[matrixIndex], cypherMatrix[i * 4 + matrixIndex]);
             }
-            srcCol[i] ^= buffer;
+            xorSum ^= buffer;
         }
+        result.push_back(xorSum);
     }
-    return srcCol;
+    return result;
 }
 
 key getNextRoundKey(key* srcKey) {
