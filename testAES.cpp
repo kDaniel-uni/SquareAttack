@@ -20,6 +20,11 @@ int test_AES() {
 	return 0;
 }
 
+int test_RoundKey() {
+
+	return 0;
+}
+
 int main(int argc, char* argv[]) {
 
 	if (argc != 2) {
@@ -28,6 +33,9 @@ int main(int argc, char* argv[]) {
 
 	if (strcmp("AES", argv[1]) == 0) {
 		return test_AES();
+	} 
+	else if (strcmp("RoundKey", argv[1]) == 0) {
+		return test_RoundKey();
 	}
 
 }
