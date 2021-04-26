@@ -176,6 +176,15 @@ tableau2D createState(std::string plainText) {
     return state;
 }
 
+std::string reverseState(tableau2D cypherTab) {
+    std::string plainText;
+    key cypherkey = ParseTableau(cypherTab);
+    for (size_t i = 0; i < cypherkey.size(); i++) {
+        plainText.push_back((char)cypherkey[i]);
+    }
+    return plainText;
+}
+
 column mixCol(column srcCol, bool isReverse) {
     column result;
     for (size_t i = 0; i < 4; i++) {
@@ -201,6 +210,18 @@ key getNextRoundKey(key* srcKey) {
         nextKey.push_back(srcKey->front());
         srcKey->erase(srcKey->begin());
     }
+    return nextKey;
+}
+
+key getNextRoundKeyReverse(key* srcKey) {
+    key nextKey;
+    auto iterator = srcKey->end();
+    for (size_t i = 16; i >= 1; i--) {
+        nextKey.push_back(srcKey->at(srcKey->size() - i));
+        iterator--;
+    }
+    srcKey->erase(iterator, srcKey->end());
+
     return nextKey;
 }
 

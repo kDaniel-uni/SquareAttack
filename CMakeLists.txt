@@ -36,6 +36,7 @@ add_test(test_NextRoundKey ./testKeyExpension NextRoundKey)
 add_test(test_KeyExpension ./testKeyExpension KeyExpension)
 
 add_test(test_AES ./testAES AES)
+add_test(test_AESDecipher ./testAES AESDecipher)
 add_test(test_AddRoundKey ./testAES AddRoundKey)
 add_test(test_ShiftRow ./testAES ShiftRow)
 add_test(test_MixColumns ./testAES MixColumns)

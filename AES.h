@@ -9,7 +9,7 @@
 
 tableau2D AddRoundKey(tableau2D state, tableau2D RoundKey);
 
-tableau2D ShiftRow(tableau2D state);
+tableau2D ShiftRow(tableau2D state, bool isReverse = false);
 
 // MixColumns function mixes the columns of the state matrix
 tableau2D MixColumns(tableau2D state, bool isReverse);
@@ -19,11 +19,11 @@ tableau2D MixColumns(tableau2D state, bool isReverse);
 tableau2D SubBytes(tableau2D state, bool isReverse);
 
 // The round transformation is composed of four different transformations
-tableau2D Round(tableau2D state, tableau2D roundKey);
+tableau2D Round(tableau2D state, tableau2D roundKey, bool isReverse = false);
 
 // The final round of the cipher is slightly different
-tableau2D FinalRound(tableau2D state, tableau2D roundKey);
+tableau2D FinalRound(tableau2D state, tableau2D roundKey, bool isReverse = false);
 
-tableau2D AES(tableau2D State, key cipherKey);
+tableau2D AES(tableau2D State, key cipherKey, bool isDecipher = false);
 
 #endif

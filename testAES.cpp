@@ -20,6 +20,26 @@ int test_AES() {
 	return 0;
 }
 
+int test_AESDecipher() {
+
+	key testKey = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
+
+	printVector(testKey);
+
+	tableau2D encryptedTab = { {0xc6, 0x9f, 0x25, 0xd0}, {0x02, 0x5a, 0x9e, 0xf3}, {0x23, 0x93, 0xf6, 0x3e}, {0x2f, 0x05, 0xb7, 0x47} };
+
+	tableau2D plainTab = AES(encryptedTab, testKey, true);
+	printVector(testKey);
+
+	std::string verifString = "theblockbreakers";
+
+	if (reverseState(plainTab) != verifString) {
+		return 1;
+	}
+
+	return 0;
+}
+
 int test_AddRoundKey(){
 	tableau2D Tab_1 = { {0x6a, 0x6a, 0x5c, 0x45} , {0x2c, 0x6d, 0x33, 0x51} , {0xb0, 0xd9, 0x5d, 0x61} ,
 	{0x27, 0x9c, 0x21, 0x5c} };
@@ -88,6 +108,9 @@ int main(int argc, char* argv[]) {
 
 	if (strcmp("AES", argv[1]) == 0) {
 		return test_AES();
+	}
+	else if (strcmp("AESDecipher", argv[1]) == 0) {
+		return test_AESDecipher();
 	}
 	else if (strcmp("AddRoundKey", argv[1]) == 0) {
 		return test_AddRoundKey();

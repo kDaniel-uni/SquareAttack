@@ -50,8 +50,12 @@ inline HexCharStruct hex(uint8_t _c)
 
 tableau2D createState(std::string plainText);
 
+std::string reverseState(tableau2D cypherText);
+
 column mixCol(column toMix, bool isReverse);
 
 key getNextRoundKey(key* srcKey);
+
+key getNextRoundKeyReverse(key* srcKey);
 
 #endif
