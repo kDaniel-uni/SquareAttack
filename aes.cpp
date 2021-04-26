@@ -22,7 +22,7 @@ tableau2D ShiftRow(tableau2D state){
     tableau2D rowsTab = ParseKeyRows(buffer);
 
     for (size_t i = 0; i < 4; i++) {
-        Shift(rowsTab[i], i);
+        rowsTab[i] = Shift(rowsTab[i], i);
     }
 
     buffer = ParseTableauRows(rowsTab);
