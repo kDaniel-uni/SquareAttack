@@ -73,11 +73,12 @@ tableau2D FinalRound(tableau2D state, tableau2D roundKey)  {
 void AES (tableau2D State, key cipherKey)   {
   int Nr = 10;
   key expandedKey = KeyExpension(cipherKey);
-  AddRoundKey(State, ParseKey(getNextRoundKey(expandedKey)));
+  key* ptrToexpandedKey = &expandedKey;
+  AddRoundKey(State, ParseKey(getNextRoundKey(ptrToexpandedKey)));
   for(int  i=1 ; i<Nr ; i++ ){
-    Round(State, ParseKey(getNextRoundKey(expandedKey))) ;
+    Round(State, ParseKey(getNextRoundKey(ptrToexpandedKey))) ;
   }
-  FinalRound(State, ParseKey(getNextRoundKey(expandedKey)));
+  FinalRound(State, ParseKey(getNextRoundKey(ptrToexpandedKey)));
 }
 
 
