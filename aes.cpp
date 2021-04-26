@@ -91,10 +91,8 @@ tableau2D FinalRound(tableau2D state, tableau2D roundKey, bool isReverse) {
 tableau2D AES (tableau2D state, key cipherKey, bool isDecipher)  {
   int Nr = 10;
   key expandedKey = KeyExpension(cipherKey);
-
   if (isDecipher) {
       state = FinalRound(state, ParseKey(getNextRoundKeyReverse(&expandedKey)), isDecipher);
-      printVector(cipherKey);
       for (int i = 1; i < Nr; i++) {
           state = Round(state, ParseKey(getNextRoundKeyReverse(&expandedKey)), isDecipher);
       }

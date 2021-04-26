@@ -9,7 +9,7 @@ column Shift(column srcColumn, unsigned int shiftNb, bool isReverse) {
     for (size_t i = 0; i < shiftNb; i++) {
         if (isReverse) {
             srcColumn.insert(srcColumn.begin(), srcColumn.back());
-            srcColumn.erase(srcColumn.end());
+            srcColumn.pop_back();
         }
         else {
             srcColumn.push_back(srcColumn.front());
