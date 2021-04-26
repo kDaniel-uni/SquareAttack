@@ -7,6 +7,6 @@
 
 #include "helpers.h"
 
-deltaSet setup(key cypherKey);
+deltaSet setup(key cypherKey, int nbOfRound);
 
 #endif

@@ -7,7 +7,7 @@
 
 uint8_t fill = 0xf2;
 
-deltaSet setup(key cypherKey) {
+deltaSet setup(key cypherKey, int nbOfRound) {
 	deltaSet set;
 	for (uint16_t i = 0x00; i < 0x0100; i++) {
 
@@ -19,7 +19,7 @@ deltaSet setup(key cypherKey) {
 			buffer.push_back({ fill, fill, fill, fill });
 		}
 
-		buffer = AES(buffer, cypherKey, false, 3);
+		buffer = AES(buffer, cypherKey, false, nbOfRound);
 
 		set.push_back(buffer);
 	}
