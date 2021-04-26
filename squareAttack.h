@@ -7,4 +7,6 @@
 
 #include "helpers.h"
 
+deltaSet setup(key cypherKey);
+
 #endif

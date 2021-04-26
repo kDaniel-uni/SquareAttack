@@ -11,13 +11,15 @@ add_executable(main main.cpp)
 add_executable(testKeyExpension testKeyExpension.cpp)
 add_executable(testAES testAES.cpp)
 add_executable(testHelpers testHelpers.cpp)
+add_executable(testSquareAttack testSquareAttack.cpp)
 
-add_library(lib keyExpension.cpp helpers.cpp aes.cpp)
+add_library(lib keyExpension.cpp helpers.cpp aes.cpp squareAttack.cpp)
 
 target_link_libraries(main lib)
 target_link_libraries(testKeyExpension lib)
 target_link_libraries(testAES lib)
 target_link_libraries(testHelpers lib)
+target_link_libraries(testSquareAttack lib)
 
 add_test(test_Shift ./testHelpers Shift)
 add_test(test_SBox ./testHelpers SBox)

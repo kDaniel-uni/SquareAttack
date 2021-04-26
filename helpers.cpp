@@ -155,9 +155,17 @@ void printTableau(tableau2D tab) {
 
 void printVector(std::vector<uint8_t> vec) {
 
-    for (auto it = vec.begin(); it != vec.end(); it++)
+    for (auto it = vec.begin(); it != vec.end(); it++) {
         std::cout << hex(*it) << " ";
+    }  
     std::cout << std::endl;
+}
+
+void printDeltaSet(deltaSet set) {
+    for (auto it = set.begin(); it != set.end(); it++) {
+        printTableau(*it);
+        std::cout << std::endl;
+    }
 }
 
 tableau2D createState(std::string plainText) {

@@ -35,7 +35,6 @@ key KeyExpension(key originKey, int nbOfRound) {
     tableau2D previousRoundKey = ParseKey(originKey);
 
     for (int roundIndex = 1; roundIndex < nbOfRound + 1; roundIndex++) {
-        printf("Entered loop nb : %i\n", roundIndex);
         previousRoundKey = NextRoundKey(previousRoundKey, roundIndex);
 
         key parsed = ParseTableau(previousRoundKey);

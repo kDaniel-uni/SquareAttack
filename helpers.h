@@ -38,6 +38,8 @@ void printTableau(tableau2D tab);
 
 void printVector(std::vector<uint8_t> vec);
 
+void printDeltaSet(deltaSet set);
+
 inline std::ostream& operator<<(std::ostream& o, const HexCharStruct& hs)
 {
 	return (o << std::setw(2) << std::setfill('0') << std::hex << (int)hs.c);

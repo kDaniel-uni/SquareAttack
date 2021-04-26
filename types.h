@@ -15,6 +15,7 @@ typedef std::vector<uint8_t> column;
 
 typedef std::vector<column> tableau2D;
 
+typedef std::vector<tableau2D> deltaSet;
 
 struct HexCharStruct
 {
