@@ -7,7 +7,7 @@
 
 #include "helpers.h"
 
-key KeyExpension(key key);
+key KeyExpension(key key, int nbOfRound = 10);
 
 tableau2D NextRoundKey(tableau2D previousKey, int roundNumber);
 

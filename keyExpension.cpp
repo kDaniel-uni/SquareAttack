@@ -26,7 +26,7 @@ tableau2D NextRoundKey(tableau2D previousKey, int roundNumber) {
     return columns;
 }
 
-key KeyExpension(key originKey) {
+key KeyExpension(key originKey, int nbOfRound) {
 
     assert(originKey.size() == 16);
 
@@ -34,7 +34,7 @@ key KeyExpension(key originKey) {
 
     tableau2D previousRoundKey = ParseKey(originKey);
 
-    for (int roundIndex = 1; roundIndex < 11; roundIndex++) {
+    for (int roundIndex = 1; roundIndex < nbOfRound + 1; roundIndex++) {
         printf("Entered loop nb : %i\n", roundIndex);
         previousRoundKey = NextRoundKey(previousRoundKey, roundIndex);
 
