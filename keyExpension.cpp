@@ -28,7 +28,15 @@ tableau2D NextRoundKey(tableau2D previousKey, int roundNumber) {
 
 key KeyExpension(key originKey, int nbOfRound) {
 
-    assert(originKey.size() == 16);
+    size_t size = originKey.size();
+
+    assert(size <= 16);
+
+    if (size < 16) {
+        for (int i = size; i < 16; i++) {
+            originKey.push_back(0x00);
+        }
+    }
 
     key finalKey = originKey;
 

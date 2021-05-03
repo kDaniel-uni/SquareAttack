@@ -33,7 +33,7 @@ int test_AESDecipher() {
 
 	std::string verifString = "theblockbreakers";
 
-	if (reverseState(plainTab) != verifString) {
+	if (reverseCypher(plainTab) != verifString) {
 		return 1;
 	}
 
@@ -100,6 +100,29 @@ int test_FinalRound(){
 	return 0;
 }
 
+int generalCypher() {
+	std::string testString = "testStringTesttt";
+	key testKey = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
+
+	tableau2D testTab = AES(createState(testString), testKey);
+
+	printTableau(testTab);
+
+	return 0;
+}
+
+int generalDecypher() {
+
+	key testKey = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
+	tableau2D encryptedTab = { {0x55, 0x26, 0x2c, 0xf8}, {0xa4, 0x2a, 0xde, 0x7d}, {0x96, 0xb3, 0x75, 0x44}, {0x9c, 0x39, 0x5f, 0x14} };
+
+	tableau2D plainTab = AES(encryptedTab, testKey, true);
+	
+	std::cout << reverseCypher(plainTab) << std::endl;
+
+	return 0;
+}
+
 int main(int argc, char* argv[]) {
 
 	if (argc != 2) {
@@ -129,6 +152,12 @@ int main(int argc, char* argv[]) {
 	}
 	else if (strcmp("FinalRound", argv[1]) == 0) {
 		return test_FinalRound();
+	}
+	else if (strcmp("generalCypher", argv[1]) == 0) {
+		return generalCypher();
+	}
+	else if (strcmp("generalDecypher", argv[1]) == 0) {
+		return generalDecypher();
 	}
 
 }

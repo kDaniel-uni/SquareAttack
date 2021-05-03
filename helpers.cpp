@@ -50,22 +50,22 @@ uint8_t LookupTable(uint8_t index, int tableIndex) {
         result = index;
     }
     else if (tableIndex == 2) {
-        result = rcon2[(unsigned int)index];
+        result = finiteField2[(unsigned int)index];
     }
     else if (tableIndex == 3) {
-        result = rcon3[(unsigned int)index];
+        result = finiteField3[(unsigned int)index];
     }
     else if (tableIndex == 9) {
-        result = rcon9[(unsigned int)index];
+        result = finiteField9[(unsigned int)index];
     }
     else if (tableIndex == 11) {
-        result = rcon11[(unsigned int)index];
+        result = finiteField11[(unsigned int)index];
     }
     else if (tableIndex == 13) {
-        result = rcon13[(unsigned int)index];
+        result = finiteField13[(unsigned int)index];
     }
     else if (tableIndex == 14) {
-        result = rcon14[(unsigned int)index];
+        result = finiteField14[(unsigned int)index];
     }
 
     return result;
@@ -161,7 +161,7 @@ void printVector(std::vector<uint8_t> vec) {
     std::cout << std::endl;
 }
 
-void printDeltaSet(deltaSet set) {
+void printDeltaSet(lambdaSet set) {
     for (auto it = set.begin(); it != set.end(); it++) {
         printTableau(*it);
         std::cout << std::endl;
@@ -184,7 +184,7 @@ tableau2D createState(std::string plainText) {
     return state;
 }
 
-std::string reverseState(tableau2D cypherTab) {
+std::string reverseCypher(tableau2D cypherTab) {
     std::string plainText;
     key cypherkey = ParseTableau(cypherTab);
     for (size_t i = 0; i < cypherkey.size(); i++) {

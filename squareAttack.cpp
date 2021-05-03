@@ -5,10 +5,11 @@
 #include "squareAttack.h"
 #include "AES.h"
 
-uint8_t fill = 0xf2;
+lambdaSet setup(key cypherKey, int nbOfRound) {
+	lambdaSet set;
 
-deltaSet setup(key cypherKey, int nbOfRound) {
-	deltaSet set;
+	uint8_t fill = (uint8_t)(rand()%256);
+
 	for (uint16_t i = 0x00; i < 0x0100; i++) {
 
 		tableau2D buffer;
@@ -24,4 +25,28 @@ deltaSet setup(key cypherKey, int nbOfRound) {
 		set.push_back(buffer);
 	}
 	return set;
+}
+
+key reverseState(lambdaSet cypher, uint8_t guess, size_t pos) {
+	key res;
+	for (size_t i = 0; i < cypher.size(); i++) {
+		cypher[i][pos / 4][pos % 4] ^= guess;
+		printf("%i ", cypher[i][pos / 4][pos % 4]);
+		cypher[i] = SubBytes(ShiftRow(cypher[i], true), true);
+		res.push_back(cypher[i][pos / 4][pos % 4]);
+	}
+	return res;
+}
+
+bool checkKeyGuess(key reversed) {
+	uint8_t xorBuffer = 0x00;
+	for (size_t i = 0; i < reversed.size(); i++) {
+		xorBuffer ^= reversed[i];
+	}
+
+	if (xorBuffer != 0x00) {
+		return false;
+	}
+
+	return true;
 }

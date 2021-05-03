@@ -38,7 +38,7 @@ void printTableau(tableau2D tab);
 
 void printVector(std::vector<uint8_t> vec);
 
-void printDeltaSet(deltaSet set);
+void printDeltaSet(lambdaSet set);
 
 inline std::ostream& operator<<(std::ostream& o, const HexCharStruct& hs)
 {
@@ -52,7 +52,7 @@ inline HexCharStruct hex(uint8_t _c)
 
 tableau2D createState(std::string plainText);
 
-std::string reverseState(tableau2D cypherText);
+std::string reverseCypher(tableau2D cypherText);
 
 column mixCol(column toMix, bool isReverse);
 
