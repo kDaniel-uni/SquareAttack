@@ -8,6 +8,7 @@
 lambdaSet setup(key cypherKey, int nbOfRound) {
 	lambdaSet set;
 
+	srand(time(NULL));
 	uint8_t fill = (uint8_t)(rand()%256);
 
 	for (uint16_t i = 0x00; i < 0x0100; i++) {
@@ -30,10 +31,9 @@ lambdaSet setup(key cypherKey, int nbOfRound) {
 key reverseState(lambdaSet cypher, uint8_t guess, size_t pos) {
 	key res;
 	for (size_t i = 0; i < cypher.size(); i++) {
-		cypher[i][pos / 4][pos % 4] ^= guess;
-		printf("%i ", cypher[i][pos / 4][pos % 4]);
-		cypher[i] = SubBytes(ShiftRow(cypher[i], true), true);
-		res.push_back(cypher[i][pos / 4][pos % 4]);
+		uint8_t buffer = guess ^ cypher[i][pos / 4][pos % 4];
+		//printf("%i : POS %u : colone %u : ligne %u\n", cypher[i][pos / 4][pos % 4], i, pos/4, pos%4);
+		res.push_back(SBox(buffer, true));
 	}
 	return res;
 }
@@ -49,4 +49,17 @@ bool checkKeyGuess(key reversed) {
 	}
 
 	return true;
+}
+
+std::vector<uint8_t> checkAllKeyGuess(lambdaSet set, size_t pos) {
+
+	std::vector<uint8_t> guesses;
+
+	for (size_t i = 0x00; i < 0x100; i++) {
+		if (checkKeyGuess(reverseState(set, i, pos))) {
+			guesses.push_back(i);
+		}
+	}
+
+	return guesses;
 }

@@ -59,7 +59,7 @@ void generalTest() {
 
 	printVector(test);
 
-	test = SBox(test);
+	test = SBoxCol(test);
 
 	printVector(test);
 

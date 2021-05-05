@@ -16,11 +16,11 @@ int test_Shift() {
 	return 0;
 }
 
-int test_SBox() {
+int test_SBoxCol() {
 	column testCol = { 0x01, 0xc2, 0x9e, 0x00 };
 	column verifCol = { 0x7c, 0x25, 0x0b, 0x63 };
 
-	testCol = SBox(testCol);
+	testCol = SBoxCol(testCol);
 
 	if (testCol != verifCol) {
 		return 1;
@@ -202,8 +202,8 @@ int main(int argc, char* argv[]) {
 	if (strcmp("Shift", argv[1]) == 0) {
 		return test_Shift();
 	}
-	else if (strcmp("SBox", argv[1]) == 0) {
-		return test_SBox();
+	else if (strcmp("SBoxCol", argv[1]) == 0) {
+		return test_SBoxCol();
 	}
 	else if (strcmp("Rcon", argv[1]) == 0) {
 		return test_Rcon();

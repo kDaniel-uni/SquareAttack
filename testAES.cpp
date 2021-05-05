@@ -3,6 +3,10 @@
  **/
 
 #include "AES.h"
+#include <algorithm>
+#include <chrono>
+#include <numeric>
+#include <thread>
 
 int test_AES() {
 
@@ -100,27 +104,82 @@ int test_FinalRound(){
 	return 0;
 }
 
-int generalCypher() {
+int generalCypher(uint8_t i) {
 	std::string testString = "testStringTesttt";
-	key testKey = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
+	key testKey = { 0x2b, 0x7e, 0x15, i, 0x28, 0xae, 0xd2, 0xa6, 0xab, i, 0x15, 0x88, i, 0xcf, 0x4f, 0x3c };
 
 	tableau2D testTab = AES(createState(testString), testKey);
-
-	printTableau(testTab);
+	//printTableau(testTab);
 
 	return 0;
 }
 
-int generalDecypher() {
+int generalDecypher(uint8_t i) {
 
-	key testKey = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
+	key testKey = { 0x2b, i, 0x15, i, 0x28, 0xae, 0xd2, 0xa6, i, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
 	tableau2D encryptedTab = { {0x55, 0x26, 0x2c, 0xf8}, {0xa4, 0x2a, 0xde, 0x7d}, {0x96, 0xb3, 0x75, 0x44}, {0x9c, 0x39, 0x5f, 0x14} };
 
 	tableau2D plainTab = AES(encryptedTab, testKey, true);
 	
-	std::cout << reverseCypher(plainTab) << std::endl;
+	//std::cout << reverseCypher(plainTab) << std::endl;
 
 	return 0;
+}
+
+int generalCypherAverage() {
+	using std::chrono::high_resolution_clock;
+	using std::chrono::duration_cast;
+	using std::chrono::duration;
+	using std::chrono::milliseconds;
+
+	std::vector<int> durations;
+	int tot = 250;
+
+	for (size_t i = 0; i < tot; i++) {
+		auto t1 = high_resolution_clock::now();
+		generalCypher(i);
+		auto t2 = high_resolution_clock::now();
+		durations.push_back(duration_cast<std::chrono::microseconds>(t2 - t1).count());
+	}
+
+	std::sort(durations.begin(), durations.end());
+
+	std::cout << "Nombre d'iterations : " << tot << "\n\n";
+	std::cout << "1er Quartile : " << durations[durations.size() / 4] << "micros\n";
+	std::cout << "Mediane : " << durations[durations.size() / 2] << "micros\n";
+	std::cout << "3eme Quartile : " << durations[durations.size() * 3 / 4] << "micros\n";
+	std::cout << "Lower : " << durations[0] << "micros\n";
+	std::cout << "Upper : " << durations[durations.size() - 1] << "micros\n";
+	std::cout << "Moyenne : " << std::accumulate(durations.begin(), durations.end(), 0) / durations.size() << "micros\n";
+
+}
+
+int generalDecypherAverage() {
+	using std::chrono::high_resolution_clock;
+	using std::chrono::duration_cast;
+	using std::chrono::duration;
+	using std::chrono::milliseconds;
+
+	std::vector<int> durations;
+	int tot = 250;
+
+	for (size_t i = 0; i < tot; i++) {
+		auto t1 = high_resolution_clock::now();
+		generalDecypher(i);
+		auto t2 = high_resolution_clock::now();
+		durations.push_back(duration_cast<std::chrono::microseconds>(t2 - t1).count());
+	}
+
+	std::sort(durations.begin(), durations.end());
+
+	std::cout << "Nombre d'iterations : " << tot << "\n\n";
+	std::cout << "1er Quartile : " << durations[durations.size() / 4] << "micros\n";
+	std::cout << "Mediane : " << durations[durations.size() / 2] << "micros\n";
+	std::cout << "3eme Quartile : " << durations[durations.size() * 3 / 4] << "micros\n";
+	std::cout << "Lower : " << durations[0] << "micros\n";
+	std::cout << "Upper : " << durations[durations.size() - 1] << "micros\n";
+	std::cout << "Moyenne : " << std::accumulate(durations.begin(), durations.end(), 0) / durations.size() << "micros\n";
+
 }
 
 int main(int argc, char* argv[]) {
@@ -154,10 +213,16 @@ int main(int argc, char* argv[]) {
 		return test_FinalRound();
 	}
 	else if (strcmp("generalCypher", argv[1]) == 0) {
-		return generalCypher();
+		return generalCypher(0);
 	}
 	else if (strcmp("generalDecypher", argv[1]) == 0) {
-		return generalDecypher();
+		return generalDecypher(0);
+	}
+	else if (strcmp("generalCypherAverage", argv[1]) == 0) {
+		return generalCypherAverage();
+	}
+	else if (strcmp("generalDecypherAverage", argv[1]) == 0) {
+		return generalDecypherAverage();
 	}
 
 }

@@ -20,20 +20,26 @@ column Shift(column srcColumn, unsigned int shiftNb, bool isReverse) {
     return srcColumn;
 }
 
-column SBox(column column, bool isReverse) {
+column SBoxCol(column column, bool isReverse) {
 
     for (size_t i = 0; i < column.size(); i++) {
-        uint8_t high = column[i] >> 4;
-        uint8_t low = column[i] & 0x0F;
-        if (isReverse) {
-            column[i] = comparison_table_reverse[high * 16 + low];
-        }
-        else {
-            column[i] = comparison_table[high * 16 + low];
-        }
+        column[i] = SBox(column[i], isReverse);
     }
 
     return column;
+}
+
+uint8_t SBox(uint8_t byte, bool isReverse) {
+    uint8_t res;
+    uint8_t high = byte >> 4;
+    uint8_t low = byte & 0x0F;
+    if (isReverse) {
+        res = comparison_table_reverse[high * 16 + low];
+    }
+    else {
+        res = comparison_table[high * 16 + low];
+    }
+    return res;
 }
 
 column Rcon(unsigned int index) {

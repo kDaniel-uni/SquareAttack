@@ -16,7 +16,9 @@
 
 column Shift(column column, unsigned int shiftNb = 1, bool isReverse = false);
 
-column SBox(column column, bool isReverse = false);
+column SBoxCol(column column, bool isReverse = false);
+
+uint8_t SBox(uint8_t byte, bool isReverse = false);
 
 column Rcon(unsigned int index);
 

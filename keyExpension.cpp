@@ -12,7 +12,7 @@ tableau2D NextRoundKey(tableau2D previousKey, int roundNumber) {
 
     buffer = Shift(buffer);
 
-    buffer = SBox(buffer);
+    buffer = SBoxCol(buffer);
 
     column xorBuffer;
     xorBuffer = ArrayXor(buffer, previousKey[0]);
@@ -51,4 +51,47 @@ key KeyExpension(key originKey, int nbOfRound) {
     }
 
     return finalKey;
+}
+
+key KeyExpensionReverse(key lastKey, int nbOfRound) {
+
+    size_t size = lastKey.size();
+
+    assert(size <= 16);
+
+    if (size < 16) {
+        for (int i = size; i < 16; i++) {
+            lastKey.push_back(0x00);
+        }
+    }
+
+    tableau2D previousRoundKey = ParseKey(lastKey);
+
+    for (int roundIndex = nbOfRound; roundIndex > 0; roundIndex--) {
+        previousRoundKey = NextRoundKeyReverse(previousRoundKey, roundIndex);
+    }
+
+    return ParseTableau(previousRoundKey);
+}
+
+
+tableau2D NextRoundKeyReverse(tableau2D currentKey, int roundNumber) {
+
+    tableau2D tab;
+
+    for (size_t index = 3; index > 0; index--) {
+        tab.insert(tab.begin(), ArrayXor(currentKey[index - 1], currentKey[index]));
+    }
+
+    column beforeRcon = ArrayXor(Rcon(roundNumber), currentKey[0]);
+
+    column buffer = tab[2];
+
+    buffer = Shift(buffer, 1);
+
+    buffer = SBoxCol(buffer);
+
+    tab.insert(tab.begin(), ArrayXor(buffer, beforeRcon));
+
+    return tab;
 }

@@ -45,7 +45,7 @@ tableau2D MixColumns(tableau2D state, bool isReverse){
 tableau2D SubBytes(tableau2D state, bool isReverse)
 {
     for (size_t i = 0; i < 4; i++) {
-        state[i] = SBox(state[i], isReverse);
+        state[i] = SBoxCol(state[i], isReverse);
     }
 
     return state;
