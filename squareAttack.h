@@ -9,6 +9,8 @@
 
 lambdaSet setup(key cypherKey, int nbOfRound);
 
+lambdaSet setup(key cypherKey, int nbOfRound, uint8_t fill);
+
 key reverseState(lambdaSet cypher, uint8_t guess, size_t pos);
 
 bool checkKeyGuess(key reversed);
